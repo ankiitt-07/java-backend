@@ -16,7 +16,6 @@ public class RestApiController {
     public String query(@RequestParam String name) {
         return "Hello " + name;
     }
-    
 
     @GetMapping("/param/{name}")
     public String param(@PathVariable String name) {
