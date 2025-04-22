@@ -11,7 +11,6 @@ public class RestApiController {
         return "Hello World";
     }
 
-
     @GetMapping("/query")
     public String query(@RequestParam String name) {
         return "Hello " + name;
