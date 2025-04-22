@@ -3,7 +3,7 @@ package com.restapi.dtos;
 public class UserDto {
     private String firstName;
     private String lastName;
-    
+
     public UserDto() {}
 
     public UserDto(String firstName, String lastName) {
