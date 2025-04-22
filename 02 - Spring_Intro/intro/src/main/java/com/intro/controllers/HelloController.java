@@ -14,7 +14,7 @@ public class HelloController {
     @GetMapping("/web/message")
     public String message(Model model) {
         model.addAttribute("message","Hello from BridgeLabz");
-        return "message";
+        return "hello";
     }
 
 }
