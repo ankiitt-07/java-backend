@@ -29,10 +29,29 @@ public class GreetingService {
     public List<Greeting> getGreeting() {
         return greetingRepository.findAll();
     }
-    
+
 
     public Greeting addGreeting(String firstName, String lastName) {
         Greeting greeting = Greeting.builder().message(("Hello " + firstName + " " + lastName).trim()).build();
+        greetingRepository.save(greeting);
+        return greeting;
+    }
+
+    public boolean deleteGreeting(long id) {
+        if (!greetingRepository.existsById(id)) {
+            return false;
+        }
+        greetingRepository.deleteById(id);
+        greetingRepository.flush();
+        return !greetingRepository.existsById(id);
+    }
+
+    public Greeting updateGreeting(long id, String firstName, String lastName) {
+        if (!greetingRepository.existsById(id)) {
+            return null;
+        }
+        Greeting greeting = Greeting.builder().message(("Hello " + firstName + " " + lastName).trim()).build();
+        greeting.setId(id);
         greetingRepository.save(greeting);
         return greeting;
     }
