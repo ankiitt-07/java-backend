@@ -24,6 +24,10 @@ public class GreetingService {
         return greetingRepository.findAll();
     }
 
+    public Greeting getGreeting(long id) {
+        return greetingRepository.findById(id).get();
+    }
+
     public Greeting addGreeting(String firstName, String lastName) {
         Greeting greeting = Greeting.builder().message(("Hello " + firstName + " " + lastName).trim()).build();
         greetingRepository.save(greeting);

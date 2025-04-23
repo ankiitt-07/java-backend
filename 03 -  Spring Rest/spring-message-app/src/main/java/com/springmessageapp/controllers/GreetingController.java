@@ -34,6 +34,12 @@ public class GreetingController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Greeting> getGreeting(@PathVariable long id) {
+        return new ResponseEntity<>(greetingService.getGreeting(id), HttpStatus.OK);
+    }
+
     @PostMapping()
     public ResponseEntity<Greeting> addGreeting(
             @RequestParam(value = "firstName", defaultValue = "") String firstName,
