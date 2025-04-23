@@ -12,6 +12,11 @@ public class AddressBookController {
         return ResponseEntity.ok("Hello World from Spring AddressBook");
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<String> all(){
+        return ResponseEntity.ok("Hello World from Spring AddressBook");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<String> get(@PathVariable int id){
         return ResponseEntity.ok("Hello World from Spring AddressBook at ID: " + id);
