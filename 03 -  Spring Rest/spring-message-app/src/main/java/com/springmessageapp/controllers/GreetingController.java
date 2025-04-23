@@ -47,4 +47,22 @@ public class GreetingController {
     ) {
         return new ResponseEntity<>(greetingService.addGreeting(firstName, lastName), HttpStatus.OK);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteGreeting(@PathVariable long id) {
+        if (greetingService.deleteGreeting(id)){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Greeting> updateGreeting(
+            @PathVariable long id,
+            @RequestParam(value = "firstName", defaultValue = "") String firstName,
+            @RequestParam(value = "lastName", defaultValue = "") String lastName
+    ) {
+        return new ResponseEntity<>(greetingService.updateGreeting(id, firstName, lastName), HttpStatus.OK);
+    }
+
 }
