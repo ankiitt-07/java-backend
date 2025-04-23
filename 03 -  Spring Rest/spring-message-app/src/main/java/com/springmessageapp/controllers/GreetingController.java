@@ -4,10 +4,9 @@ import com.springmessageapp.entities.Greeting;
 import com.springmessageapp.services.GreetingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -26,13 +25,44 @@ public class GreetingController {
     }
 
     @GetMapping()
-    public ResponseEntity<Greeting> getGreeting(
+    public ResponseEntity<List<Greeting>> getGreeting(
             @RequestParam(value = "firstName", defaultValue = "") String firstName,
             @RequestParam(value = "lastName", defaultValue = "") String lastName
     ) {
         return new ResponseEntity<>(
-                greetingService.getGreeting(firstName, lastName),
+                greetingService.getGreeting(),
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Greeting> getGreeting(@PathVariable long id) {
+        return new ResponseEntity<>(greetingService.getGreeting(id), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Greeting> addGreeting(
+            @RequestParam(value = "firstName", defaultValue = "") String firstName,
+            @RequestParam(value = "lastName", defaultValue = "") String lastName
+    ) {
+        return new ResponseEntity<>(greetingService.addGreeting(firstName, lastName), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Boolean> deleteGreeting(@PathVariable long id) {
+        if (greetingService.deleteGreeting(id)){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Greeting> updateGreeting(
+            @PathVariable long id,
+            @RequestParam(value = "firstName", defaultValue = "") String firstName,
+            @RequestParam(value = "lastName", defaultValue = "") String lastName
+    ) {
+        return new ResponseEntity<>(greetingService.updateGreeting(id, firstName, lastName), HttpStatus.OK);
+    }
+
 }
