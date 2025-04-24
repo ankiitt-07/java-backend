@@ -3,6 +3,7 @@ package com.springpayroll.controllers;
 
 import com.springpayroll.dtos.EmployeeDTO;
 import com.springpayroll.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,13 @@ public class EmployeeController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Boolean> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<Boolean> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         employeeService.createEmployee(employeeDTO);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Boolean> updateEmployee(@PathVariable Integer id, @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<Boolean> updateEmployee(@PathVariable Integer id,@Valid @RequestBody EmployeeDTO employeeDTO) {
         employeeService.updateEmployee(id, employeeDTO);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
