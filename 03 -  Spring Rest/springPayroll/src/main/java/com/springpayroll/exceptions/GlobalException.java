@@ -19,4 +19,14 @@ public class GlobalException extends RuntimeException {
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity<Object> handleEmployeeException(final EmployeeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PayrollException.class)
+    public ResponseEntity<Object> handlePayrollException(final PayrollException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

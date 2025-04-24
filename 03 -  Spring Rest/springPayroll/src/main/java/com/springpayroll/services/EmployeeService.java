@@ -3,6 +3,7 @@ package com.springpayroll.services;
 import com.springpayroll.dtos.EmployeeDTO;
 import com.springpayroll.mappings.EmployeeMapper;
 import com.springpayroll.entities.Employee;
+import com.springpayroll.exceptions.EmployeeException;
 import com.springpayroll.repositories.IEmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class EmployeeService {
         if (employeeOpt.isPresent()) {
             return employeeMapper.toEmployeeDTO(employeeOpt.get());
         } else {
-            throw new RuntimeException("Employee not found");
+            throw new EmployeeException("Employee not found");
         }
     }
 
@@ -35,16 +36,25 @@ public class EmployeeService {
     }
 
     public void createEmployee(EmployeeDTO employeeDTO) {
+        if (employeeDTO.getId() != null && employeeRepository.existsById(employeeDTO.getId())) {
+            throw new EmployeeException("Employee with ID " + employeeDTO.getId() + " already exists");
+        }
         employeeRepository.save(employeeMapper.toEmployeeEntity(employeeDTO));
     }
 
     public void updateEmployee(Integer id, EmployeeDTO employeeDTO) {
+        if (!employeeRepository.existsById(id)) {
+            throw new EmployeeException("Cannot update. Employee with ID " + id + " does not exist");
+        }
         Employee employee = employeeMapper.toEmployeeEntity(employeeDTO);
         employee.setId(id);
         employeeRepository.save(employee);
     }
 
     public void deleteEmployee(Integer id) {
+        if (!employeeRepository.existsById(id)) {
+            throw new EmployeeException("Cannot delete. Employee with ID " + id + " not found");
+        }
         employeeRepository.deleteById(id);
     }
 }
