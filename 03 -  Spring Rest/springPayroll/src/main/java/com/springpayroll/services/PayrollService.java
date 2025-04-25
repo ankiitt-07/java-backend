@@ -16,13 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class PayrollService {
     private final IPayrollRepository payrollRepository;
-    private final IEmployeeRepository employeeRepository;
     private final PayrollMapper payrollMapper;
 
-    public PayrollService(IPayrollRepository payrollRepository, IEmployeeRepository employeeRepository, PayrollMapper payrollMapper) {
-        this.payrollRepository = payrollRepository;
+    public PayrollService(IPayrollRepository payrollRepository, PayrollMapper payrollMapper) {        this.payrollRepository = payrollRepository;
         this.payrollMapper = payrollMapper;
-        this.employeeRepository = employeeRepository;
+
     }
 
     public PayrollDTO getPayrollById(int id) {

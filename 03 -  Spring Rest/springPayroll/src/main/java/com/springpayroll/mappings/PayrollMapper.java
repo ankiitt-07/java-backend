@@ -10,9 +10,9 @@ import org.mapstruct.factory.Mappers;
 public interface PayrollMapper {
     PayrollMapper INSTANCE = Mappers.getMapper(PayrollMapper.class);
 
-    @Mapping(source = "employee.id", target = "employeeId")
+    @Mapping(source = "salary", target = "salary")
     PayrollDTO toPayrollDTO(Payroll payroll);
 
-    @Mapping(source = "employeeId", target = "employee.id")
+    @Mapping(source = "salary", target = "salary")
     Payroll toPayrollEntity(PayrollDTO payrollDTO);
 }
