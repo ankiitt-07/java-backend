@@ -29,4 +29,8 @@ public class GlobalException extends RuntimeException {
     public ResponseEntity<Object> handlePayrollException(final PayrollException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(DepartmentException.class)
+    public ResponseEntity<Object> handleDepartmentException(final DepartmentException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
