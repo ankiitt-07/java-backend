@@ -51,4 +51,12 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @GetMapping("/query")
+    public ResponseEntity<Object> employeeQuery(@RequestParam("departmentName") String departmentName) {
+        if (departmentName == null || departmentName.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(employeeService.getEmployeeByDepartmentName(departmentName));
+    }
 }
