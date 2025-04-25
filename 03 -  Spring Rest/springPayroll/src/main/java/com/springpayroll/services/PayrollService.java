@@ -4,6 +4,7 @@ import com.springpayroll.dtos.PayrollDTO;
 import com.springpayroll.entities.Employee;
 import com.springpayroll.mappings.PayrollMapper;
 import com.springpayroll.entities.Payroll;
+import com.springpayroll.exceptions.PayrollException;
 import com.springpayroll.repositories.IEmployeeRepository;
 import com.springpayroll.repositories.IPayrollRepository;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class PayrollService {
     private final IPayrollRepository payrollRepository;
-    private final IEmployeeRepository employeeRepository;
     private final PayrollMapper payrollMapper;
 
-    public PayrollService(IPayrollRepository payrollRepository, IEmployeeRepository employeeRepository, PayrollMapper payrollMapper) {
-        this.payrollRepository = payrollRepository;
+    public PayrollService(IPayrollRepository payrollRepository, PayrollMapper payrollMapper) {        this.payrollRepository = payrollRepository;
         this.payrollMapper = payrollMapper;
-        this.employeeRepository = employeeRepository;
+
     }
 
     public PayrollDTO getPayrollById(int id) {
@@ -29,7 +28,7 @@ public class PayrollService {
         if (payrollOpt.isPresent()) {
             return payrollMapper.toPayrollDTO(payrollOpt.get());
         } else {
-            throw new RuntimeException("Payroll not found");
+            throw new PayrollException("Payroll not found");
         }
     }
 
@@ -39,20 +38,25 @@ public class PayrollService {
     }
 
     public void createPayroll(PayrollDTO payrollDTO) {
-        Employee employee = employeeRepository.findById(payrollDTO.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found"));
-        Payroll payroll = payrollMapper.toPayrollEntity(payrollDTO);
-        payroll.setEmployee(employee);
-        payrollRepository.save(payroll);
+        if (payrollDTO.getId() != null && payrollRepository.existsById(payrollDTO.getId())) {
+            throw new PayrollException("Payroll with ID " + payrollDTO.getId() + " already exists");
+        }
+        payrollRepository.save(payrollMapper.toPayrollEntity(payrollDTO));
     }
 
     public void updatePayroll(Integer id, PayrollDTO payrollDTO) {
+        if (!payrollRepository.existsById(id)) {
+            throw new PayrollException("Cannot update. Payroll with ID " + id + " does not exist");
+        }
         Payroll payroll = payrollMapper.toPayrollEntity(payrollDTO);
         payroll.setId(id);
         payrollRepository.save(payroll);
     }
 
     public void deletePayroll(Integer id) {
+        if (!payrollRepository.existsById(id)) {
+            throw new PayrollException("Payroll with ID " + id + " does not exist");
+        }
         payrollRepository.deleteById(id);
     }
 }
