@@ -93,4 +93,9 @@ public class EmployeeService {
         }
         employeeRepository.deleteById(id);
     }
+
+    public List<EmployeeDTO> getEmployeeByDepartmentName(String departmentName) {
+        return employeeRepository.findEmployeeByDepartment(departmentName).stream()
+                .map(employeeMapper::toEmployeeDTO).collect(Collectors.toList());
+    }
 }

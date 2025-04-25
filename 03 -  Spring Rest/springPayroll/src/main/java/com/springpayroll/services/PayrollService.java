@@ -20,7 +20,7 @@ public class PayrollService {
 
     public PayrollService(IPayrollRepository payrollRepository, PayrollMapper payrollMapper) {        this.payrollRepository = payrollRepository;
         this.payrollMapper = payrollMapper;
-        
+
     }
 
     public PayrollDTO getPayrollById(int id) {
